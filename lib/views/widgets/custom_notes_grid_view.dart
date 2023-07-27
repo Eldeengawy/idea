@@ -1,7 +1,9 @@
 import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:idea/cubits/notes_cubit/notes_cubit_cubit.dart';
 import 'package:idea/models/note_model.dart';
 import 'package:idea/views/edit_note_view.dart';
 import 'package:idea/views/widgets/add_note_bottom_sheet.dart';
@@ -106,43 +108,46 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return Stack(
-      children: [
-        MasonryGridView.count(
-          crossAxisCount: 2,
-          mainAxisSpacing: 8,
-          crossAxisSpacing: 8,
-          itemCount: notes.length,
-          physics: const BouncingScrollPhysics(),
-          controller: _scrollController,
-          itemBuilder: (context, index) {
-            return Hero(
-              tag: notes[index].title!,
-              child: NoteWidget(
-                // title: notes[index].title,
-                // content: notes[index].content,
-                // color: const Color(0xffda892b),
-                // color: notes[index].color ?? const Color(0xff17181a),
-                note: notes[index],
+    return BlocProvider(
+      create: (context) => NotesCubit(),
+      child: Stack(
+        children: [
+          MasonryGridView.count(
+            crossAxisCount: 2,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 8,
+            itemCount: notes.length,
+            physics: const BouncingScrollPhysics(),
+            controller: _scrollController,
+            itemBuilder: (context, index) {
+              return Hero(
+                tag: notes[index].title!,
+                child: NoteWidget(
+                  // title: notes[index].title,
+                  // content: notes[index].content,
+                  // color: const Color(0xffda892b),
+                  // color: notes[index].color ?? const Color(0xff17181a),
+                  note: notes[index],
+                ),
+              );
+            },
+          ),
+          // if (_isButtonVisible)
+          Positioned(
+            bottom: 20.0,
+            left: screenWidth / 6,
+            child: Crab(
+              tag: 'addButton',
+              child: CustomCircularButton(
+                onTapFunction: () => showAddFolderBottomSheet(context),
+                title: 'Add New Note',
+                isButtonVisible: _isButtonVisible,
               ),
-            );
-          },
-        ),
-        // if (_isButtonVisible)
-        Positioned(
-          bottom: 20.0,
-          left: screenWidth / 6,
-          child: Crab(
-            tag: 'addButton',
-            child: CustomCircularButton(
-              onTapFunction: () => showAddFolderBottomSheet(context),
-              title: 'Add New Note',
-              isButtonVisible: _isButtonVisible,
             ),
           ),
-        ),
-        const SizedBox(height: 50),
-      ],
+          const SizedBox(height: 50),
+        ],
+      ),
     );
   }
 
