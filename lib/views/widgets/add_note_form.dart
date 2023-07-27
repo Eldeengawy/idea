@@ -4,6 +4,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:idea/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:idea/models/note_model.dart';
 import 'package:idea/views/widgets/color_pick_button.dart';
+import 'package:intl/intl.dart'; // Import the intl package
 
 class AddNoteForm extends StatefulWidget {
   final void Function(
@@ -74,8 +75,12 @@ class _AddNoteFormState extends State<AddNoteForm> {
       String folderName = ''; // Replace with actual folder name logic
       widget.onAddFolder(title, content, _selectedColor, folderName);
       // Navigator.pop(context);
-      var noteModel = NoteModel(
-          title: title, content: content, date: DateTime.now.toString());
+      // Format the date in your desired format
+      DateTime now = DateTime.now();
+
+      String formattedDate = DateFormat('dd/MM/yyyy hh:mm a').format(now);
+      var noteModel =
+          NoteModel(title: title, content: content, date: formattedDate);
       BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
     } else {
       setState(() {
