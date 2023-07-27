@@ -1,4 +1,3 @@
-import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:idea/views/widgets/custom_notes_grid_view.dart';
 import 'package:idea/views/widgets/folders_screen.dart';
@@ -14,13 +13,13 @@ class PageViewWithToggleButtons extends StatefulWidget {
 final PageController _pageController = PageController(initialPage: 0);
 
 class _PageViewWithToggleButtonsState extends State<PageViewWithToggleButtons> {
-  final int _currentPageIndex = 0;
+  // final int _currentPageIndex = 0;
   int selectedIndex = 0;
-  final _coastController = CoastController();
-  final _beaches = [
-    Beach(builder: (context) => const NotesStaggeredGrid()),
-    Beach(builder: (context) => const FoldersScreen()),
-  ];
+  // final _coastController = CoastController();
+  // final _beaches = [
+  //   Beach(builder: (context) => const NotesStaggeredGrid()),
+  //   Beach(builder: (context) => const FoldersScreen()),
+  // ];
 
   @override
   Widget build(BuildContext context) {
