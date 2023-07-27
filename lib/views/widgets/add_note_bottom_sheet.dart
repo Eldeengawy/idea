@@ -17,6 +17,9 @@ class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
   final TextEditingController _subjectController = TextEditingController();
   final String _selectedFolderName = '';
   Color _selectedColor = const Color(0xff17181a); // Default color
+  final GlobalKey<FormState> formKey = GlobalKey();
+  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
+  String? title, content;
 
   void _showColorPicker() {
     showDialog(
@@ -68,82 +71,110 @@ class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _subjectController,
-              decoration: const InputDecoration(labelText: 'Subject'),
-            ),
-            const SizedBox(height: 12),
-            // ColorPicker(
-            // onColorChanged: (color) {
-            // Implement color picker logic here
+        child: Form(
+          key: formKey,
+          autovalidateMode: autovalidateMode,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                onSaved: (value) {
+                  title = value;
+                },
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Field is required';
+                  }
+                  return null;
+                },
+                controller: _titleController,
+                decoration: const InputDecoration(labelText: 'Title'),
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                onSaved: (value) {
+                  content = value;
+                },
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return 'Field is required';
+                  }
+                  return null;
+                },
+                controller: _subjectController,
+                decoration: const InputDecoration(labelText: 'Subject'),
+              ),
+              const SizedBox(height: 12),
+              // ColorPicker(
+              // onColorChanged: (color) {
+              // Implement color picker logic here
 
-            const SizedBox(height: 12),
-            // _buildFolderDropdown(),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 18.0),
-                      backgroundColor: const Color(0xffff9e37),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      elevation: 4,
-                    ),
-                    onPressed: () {
-                      String title = _titleController.text;
-                      String subject = _subjectController.text;
-                      Color color = _selectedColor;
-                      String folderName = _selectedFolderName;
-                      widget.onAddFolder(title, subject, color, folderName);
-                      Navigator.pop(context);
-                    },
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.add, size: 24),
-                        SizedBox(width: 8),
-                        Text(
-                          'Add Note',
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+              const SizedBox(height: 12),
+              // _buildFolderDropdown(),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 18.0),
+                        backgroundColor: const Color(0xffff9e37),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
                         ),
-                      ],
+                        elevation: 4,
+                      ),
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          formKey.currentState!.save();
+                          String title = _titleController.text;
+                          String subject = _subjectController.text;
+                          Color color = _selectedColor;
+                          String folderName = _selectedFolderName;
+                          widget.onAddFolder(title, subject, color, folderName);
+                          Navigator.pop(context);
+                        } else {
+                          autovalidateMode = AutovalidateMode.always;
+                          setState(() {});
+                        }
+                      },
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.add, size: 24),
+                          SizedBox(width: 8),
+                          Text(
+                            'Add Note',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 20.0,
-                ),
-                CircleAvatar(
-                  radius: 30.0,
-                  backgroundColor: Colors.blueGrey,
-                  child: IconButton(
-                    onPressed: () {
-                      _showColorPicker();
-                    },
-                    icon: const Icon(Icons.color_lens),
-
-                    // },
-                    // pickerColor: _selectedColor,
+                  const SizedBox(
+                    width: 20.0,
                   ),
-                ),
-              ],
-            )
-          ],
+                  CircleAvatar(
+                    radius: 30.0,
+                    backgroundColor: Colors.blueGrey,
+                    child: IconButton(
+                      onPressed: () {
+                        _showColorPicker();
+                      },
+                      icon: const Icon(Icons.color_lens),
+
+                      // },
+                      // pickerColor: _selectedColor,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
