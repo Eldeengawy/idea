@@ -45,7 +45,7 @@ abstract class AppThemes {
     brightness: Brightness.dark,
     primaryColor:
         Colors.orange, // Set your desired primary color for dark theme
-
+    useMaterial3: true,
     scaffoldBackgroundColor: const Color(0xFF0C0A0B),
     textTheme: GoogleFonts.montserratTextTheme().copyWith(
       titleLarge: TextStyle(
@@ -72,7 +72,7 @@ abstract class AppThemes {
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: Colors.blue, // Set your desired primary color for light theme
-
+    useMaterial3: true,
     scaffoldBackgroundColor: Colors.white,
     textTheme: GoogleFonts.montserratTextTheme().copyWith(
       titleLarge: TextStyle(
