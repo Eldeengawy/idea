@@ -121,6 +121,7 @@ class _FoldersScreenState extends State<FoldersScreen> {
 
   void showAddFolderBottomSheet(BuildContext context) {
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
         return AddFolderBottomSheet(
