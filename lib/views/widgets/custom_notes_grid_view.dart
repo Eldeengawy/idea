@@ -2,8 +2,8 @@ import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:idea/models/note_model.dart';
 import 'package:idea/views/edit_note_view.dart';
-import 'package:idea/views/models/note_model.dart';
 import 'package:idea/views/widgets/add_note_bottom_sheet.dart';
 import 'package:idea/views/widgets/custom_circular_button.dart';
 
