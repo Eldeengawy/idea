@@ -1,4 +1,6 @@
+import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:idea/views/widgets/add_folder_bottom_sheet.dart';
 import 'package:idea/views/widgets/custom_circular_button.dart';
 
@@ -10,19 +12,62 @@ class FoldersScreen extends StatefulWidget {
 }
 
 class _FoldersScreenState extends State<FoldersScreen> {
+  bool _isButtonVisible = true; // Initial state, the button is visible
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Add a listener to the ScrollController
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    // Remember to dispose of the ScrollController when it's no longer needed
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    // Check the scroll position and decide whether to show or hide the button
+    if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.forward) {
+      // User is scrolling up, show the button
+      setState(() {
+        _isButtonVisible = true;
+      });
+    } else if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.reverse) {
+      // User is scrolling down, hide the button
+      setState(() {
+        _isButtonVisible = false;
+      });
+    }
+  }
+
   List<Map<String, dynamic>> folders = [
+    {"folderName": "Alarms", "icon": Icons.access_alarm_rounded},
+    {"folderName": "Alarms", "icon": Icons.access_alarm_rounded},
+    {"folderName": "Alarms", "icon": Icons.access_alarm_rounded},
+    {"folderName": "Alarms", "icon": Icons.access_alarm_rounded},
+    {"folderName": "Alarms", "icon": Icons.access_alarm_rounded},
     {"folderName": "Alarms", "icon": Icons.access_alarm_rounded},
     {"folderName": "Important folder", "icon": Icons.folder},
     {"folderName": "Education", "icon": Icons.design_services},
     {"folderName": "labels", "icon": Icons.label},
   ];
 
+  final ScrollController _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    double screenWidth = MediaQuery.of(context).size.width;
+    return Stack(
       children: [
         Expanded(
           child: GridView.builder(
+            controller: _scrollController,
             physics: const BouncingScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -36,11 +81,18 @@ class _FoldersScreenState extends State<FoldersScreen> {
             },
           ),
         ),
-        CustomCircularButton(
-          onTapFunction: () => showAddFolderBottomSheet(context),
-          title: 'Add New Folder',
+        Positioned(
+          bottom: 20.0,
+          left: screenWidth / 6,
+          child: Crab(
+            tag: 'addButton',
+            child: CustomCircularButton(
+              onTapFunction: () => showAddFolderBottomSheet(context),
+              title: 'Add New Folder',
+              isButtonVisible: _isButtonVisible,
+            ),
+          ),
         ),
-        const SizedBox(height: 50),
       ],
     );
   }
@@ -59,7 +111,7 @@ class _FoldersScreenState extends State<FoldersScreen> {
             const SizedBox(height: 8.0),
             Text(
               folder['folderName'],
-              style: const TextStyle(fontSize: 16.0),
+              style: const TextStyle(fontSize: 16.0, color: Colors.white),
             ),
           ],
         ),

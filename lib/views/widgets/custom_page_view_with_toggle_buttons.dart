@@ -1,3 +1,4 @@
+import 'package:coast/coast.dart';
 import 'package:flutter/material.dart';
 import 'package:idea/views/widgets/custom_notes_grid_view.dart';
 import 'package:idea/views/widgets/folders_screen.dart';
@@ -13,8 +14,13 @@ class PageViewWithToggleButtons extends StatefulWidget {
 final PageController _pageController = PageController(initialPage: 0);
 
 class _PageViewWithToggleButtonsState extends State<PageViewWithToggleButtons> {
-  int _currentPageIndex = 0;
+  final int _currentPageIndex = 0;
   int selectedIndex = 0;
+  final _coastController = CoastController();
+  final _beaches = [
+    Beach(builder: (context) => const NotesStaggeredGrid()),
+    Beach(builder: (context) => const FoldersScreen()),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -27,25 +33,41 @@ class _PageViewWithToggleButtonsState extends State<PageViewWithToggleButtons> {
             _buildButton(1, 'Folders'),
           ],
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        // const SizedBox(
+        //   height: 20,
+        // ),
+        // Expanded(
+        //   child: Coast(
+        //     beaches: _beaches,
+        //     controller: _coastController,
+        //     onPageChanged: (index) {
+        //       setState(() {
+        //         // _currentPageIndex = index;
+        //         selectedIndex =
+        //             index; // Update selectedIndex to sync with PageView index
+        //       });
+        //     },
+        //     observers: [
+        //       CrabController(),
+        //     ],
+        //   ),
+        // ),
         Expanded(
           child: PageView(
             controller: _pageController,
             onPageChanged: (index) {
               setState(() {
-                _currentPageIndex = index;
+                // _currentPageIndex = index;
                 selectedIndex =
                     index; // Update selectedIndex to sync with PageView index
               });
             },
-            children: [
+            children: const [
               // Screen 1 (All Notes),
               NotesStaggeredGrid(),
 
               // Screen 2 (Folders),
-              const FoldersScreen(),
+              FoldersScreen(),
             ],
           ),
         ),
