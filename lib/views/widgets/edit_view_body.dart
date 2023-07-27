@@ -3,7 +3,7 @@ import 'package:idea/models/note_model.dart';
 import 'package:idea/views/widgets/custom_save_button.dart';
 
 class EditNoteViewBody extends StatefulWidget {
-  final Note? note; // Note object to be edited, nullable
+  final NoteModel? note; // Note object to be edited, nullable
 
   const EditNoteViewBody({Key? key, required this.note}) : super(key: key);
 

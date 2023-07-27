@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 part 'note_model.g.dart';
 
 @HiveType(typeId: 0)
-class Note extends HiveObject {
+class NoteModel extends HiveObject {
   @HiveField(0)
   final String? title;
   @HiveField(1)
@@ -16,7 +16,7 @@ class Note extends HiveObject {
   @HiveField(4)
   final String? folderName;
 
-  Note({
+  NoteModel({
     this.date,
     required this.title,
     required this.content,

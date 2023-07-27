@@ -3,7 +3,7 @@ import 'package:idea/models/note_model.dart';
 import 'package:idea/views/widgets/edit_view_body.dart';
 
 class EditNoteView extends StatelessWidget {
-  final Note? note;
+  final NoteModel? note;
   const EditNoteView({super.key, required this.note});
 
   @override

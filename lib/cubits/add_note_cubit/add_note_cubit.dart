@@ -8,4 +8,4 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   AddNoteCubit() : super(AddNoteInitial());
 }
 
-addNote(Note note) {}
+addNote(NoteModel note) {}

@@ -49,44 +49,44 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
     }
   }
 
-  final List<Note> notes = [
-    Note(
+  final List<NoteModel> notes = [
+    NoteModel(
       title: "What is Lorem Ipsum?",
       content:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
     ),
-    Note(
+    NoteModel(
       title: "Why do we use it?",
       content: "This is the content of Note 2. It has a longer text.",
     ),
-    Note(
+    NoteModel(
       title: "Note 3",
       content: "Short content.",
     ),
-    Note(
+    NoteModel(
       title: "Where does it come from?",
       content:
           'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
     ),
-    Note(
+    NoteModel(
       title: "Note 5",
       content:
           "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
     ),
-    Note(
+    NoteModel(
       title: "Note 6",
       content:
           "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
     ),
-    Note(
+    NoteModel(
       title: "Note 7",
       content: "Short content.",
     ),
-    Note(
+    NoteModel(
       title: "Note 8",
       content: "Short content.",
     ),
-    Note(
+    NoteModel(
       title: "Note 9",
       content:
           "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
@@ -149,7 +149,8 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
         return AddNoteBottomSheet(
           onAddFolder:
               (String title, String content, Color color, String folderName) {
-            Note note = Note(title: title, content: content, color: color);
+            NoteModel note =
+                NoteModel(title: title, content: content, color: color);
 
             setState(() {
               notes.add(note);
@@ -167,7 +168,7 @@ class NoteWidget extends StatelessWidget {
   // final String? title;
   // final String? content;
   // final Color? color;
-  final Note? note;
+  final NoteModel? note;
 
   const NoteWidget({super.key, required this.note});
 
