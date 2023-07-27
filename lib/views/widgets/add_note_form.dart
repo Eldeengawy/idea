@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:idea/cubits/add_note_cubit/add_note_cubit.dart';
+import 'package:idea/models/note_model.dart';
 import 'package:idea/views/widgets/color_pick_button.dart';
 
 class AddNoteForm extends StatefulWidget {
@@ -67,10 +70,13 @@ class _AddNoteFormState extends State<AddNoteForm> {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       String title = _titleController.text;
-      String subject = _subjectController.text;
+      String content = _subjectController.text;
       String folderName = ''; // Replace with actual folder name logic
-      widget.onAddFolder(title, subject, _selectedColor, folderName);
-      Navigator.pop(context);
+      widget.onAddFolder(title, content, _selectedColor, folderName);
+      // Navigator.pop(context);
+      var noteModel = NoteModel(
+          title: title, content: content, date: DateTime.now.toString());
+      BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
     } else {
       setState(() {
         autovalidateMode = AutovalidateMode.always;

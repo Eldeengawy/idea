@@ -14,25 +14,28 @@ class AddNoteBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 600, // Specify your desired fixed height here
-      child: BlocConsumer<AddNoteCubit, AddNoteState>(
-        listener: (context, state) {
-          if (state is AddNoteFailure) {
-            if (kDebugMode) {
-              print('Failed ${state.errMessage}');
+    return BlocProvider(
+      create: (BuildContext context) => AddNoteCubit(),
+      child: SizedBox(
+        height: 600, // Specify your desired fixed height here
+        child: BlocConsumer<AddNoteCubit, AddNoteState>(
+          listener: (context, state) {
+            if (state is AddNoteFailure) {
+              if (kDebugMode) {
+                print('Failed ${state.errMessage}');
+              }
             }
-          }
 
-          if (state is AddNoteSuccess) {
-            Navigator.pop(context);
-          }
-        },
-        builder: (context, state) {
-          return ModalProgressHUD(
-              inAsyncCall: state is AddNoteLoading ? true : false,
-              child: AddNoteForm(onAddFolder: onAddFolder));
-        },
+            if (state is AddNoteSuccess) {
+              Navigator.pop(context);
+            }
+          },
+          builder: (context, state) {
+            return ModalProgressHUD(
+                inAsyncCall: state is AddNoteLoading ? true : false,
+                child: AddNoteForm(onAddFolder: onAddFolder));
+          },
+        ),
       ),
     );
   }
