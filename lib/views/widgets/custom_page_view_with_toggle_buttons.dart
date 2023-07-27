@@ -53,6 +53,7 @@ class _PageViewWithToggleButtonsState extends State<PageViewWithToggleButtons> {
         // ),
         Expanded(
           child: PageView(
+            physics: const BouncingScrollPhysics(),
             controller: _pageController,
             onPageChanged: (index) {
               setState(() {
@@ -107,7 +108,9 @@ class _PageViewWithToggleButtonsState extends State<PageViewWithToggleButtons> {
           text,
           style: TextStyle(
             fontSize: 16,
-            color: isSelected ? Colors.white : Colors.grey[600],
+            color: isSelected
+                ? Theme.of(context).textTheme.titleLarge?.color
+                : Colors.grey[600],
             // fontWeight: FontWeight.bold,
           ),
         ),

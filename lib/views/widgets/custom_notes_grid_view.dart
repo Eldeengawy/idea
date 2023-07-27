@@ -99,27 +99,25 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
-        Expanded(
-          child: MasonryGridView.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-            itemCount: notes.length,
-            physics: const BouncingScrollPhysics(),
-            controller: _scrollController,
-            itemBuilder: (context, index) {
-              return Hero(
-                tag: notes[index].title!,
-                child: NoteWidget(
-                  // title: notes[index].title,
-                  // content: notes[index].content,
-                  // color: const Color(0xffda892b),
-                  // color: notes[index].color ?? const Color(0xff17181a),
-                  note: notes[index],
-                ),
-              );
-            },
-          ),
+        MasonryGridView.count(
+          crossAxisCount: 2,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          itemCount: notes.length,
+          physics: const BouncingScrollPhysics(),
+          controller: _scrollController,
+          itemBuilder: (context, index) {
+            return Hero(
+              tag: notes[index].title!,
+              child: NoteWidget(
+                // title: notes[index].title,
+                // content: notes[index].content,
+                // color: const Color(0xffda892b),
+                // color: notes[index].color ?? const Color(0xff17181a),
+                note: notes[index],
+              ),
+            );
+          },
         ),
         // if (_isButtonVisible)
         Positioned(
@@ -175,8 +173,10 @@ class NoteWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color backgroundColor = note!.color ??
-        const Color(0xff17181a); // If color is null, use the default color
-
+        (Theme.of(context).textTheme.titleLarge?.color == Colors.white
+            ? const Color(0xff17181a) // Dark theme primary text color is white
+            : Colors.white
+                .withOpacity(0.9)); // Light theme primary text color is amber
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -187,8 +187,17 @@ class NoteWidget extends StatelessWidget {
                     )));
       },
       child: Container(
-        decoration: BoxDecoration(
-            color: backgroundColor, borderRadius: BorderRadius.circular(30.0)),
+        decoration: BoxDecoration(boxShadow: [
+          Theme.of(context).textTheme.titleLarge?.color == Colors.black
+              ? BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 4,
+                  offset:
+                      const Offset(0, 2), // Adjust the position of the shadow
+                )
+              : const BoxShadow(),
+        ], color: backgroundColor, borderRadius: BorderRadius.circular(30.0)),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
@@ -198,14 +207,16 @@ class NoteWidget extends StatelessWidget {
                 note!.title!,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontSize: 18,
-                    color: Colors.white,
+                    // color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
                 note!.content!,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    fontSize: 14, color: Colors.white.withOpacity(0.6)),
+                      fontSize: 14,
+                      // color:  Colors.white.withOpacity(0.6)
+                    ),
               ),
             ],
           ),

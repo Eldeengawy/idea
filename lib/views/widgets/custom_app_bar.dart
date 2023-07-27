@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:idea/app_constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idea/cubits/change_mode_cubit/change_mode_cubit.dart';
 import 'package:idea/views/widgets/custom_mode_switch_button.dart';
 
 class CustomAppBar extends StatefulWidget {
@@ -10,24 +11,30 @@ class CustomAppBar extends StatefulWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  void toggleTheme() {
-    setState(() {
-      isNightMode = !isNightMode;
-    });
-  }
+  // void toggleTheme() {
+  //   setState(() {
+  //     isNightMode = !isNightMode;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text(
+        Text(
           'IDEA',
-          style: TextStyle(color: Colors.white, fontSize: 28.0),
+          style:
+              Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 28.0),
         ),
-        CustomModeSwitchButton(
-          isNightMode: isNightMode,
-          onTap: toggleTheme,
+        BlocProvider(
+          create: (context) => ChangeModeCubit(),
+          child: CustomModeSwitchButton(
+            isNightMode: ChangeModeCubit.get(context).isDarkMode,
+            onTap: () {
+              BlocProvider.of<ChangeModeCubit>(context).toggleMode();
+            },
+          ),
         ),
       ],
     );

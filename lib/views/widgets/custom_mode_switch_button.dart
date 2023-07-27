@@ -23,12 +23,12 @@ class CustomModeSwitchButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           color: isNightMode
               ? Colors.blueGrey.withOpacity(0.6)
-              : Colors.yellow.withOpacity(0.3),
+              : Colors.yellow.withOpacity(0.7),
         ),
         child: Center(
           child: Icon(
             isNightMode ? FeatherIcons.moon : FeatherIcons.sun,
-            color: Colors.white,
+            color: Theme.of(context).textTheme.titleLarge?.color,
             size: 20,
           ),
         ),

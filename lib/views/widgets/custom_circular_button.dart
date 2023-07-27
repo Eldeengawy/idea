@@ -34,7 +34,11 @@ class CustomCircularButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.add, size: isButtonVisible ? 22.0 : 0),
+            Icon(
+              Icons.add,
+              size: isButtonVisible ? 22.0 : 0,
+              color: Colors.white,
+            ),
             const SizedBox(width: 8.0),
             Text(
               '$title',

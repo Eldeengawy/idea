@@ -65,21 +65,19 @@ class _FoldersScreenState extends State<FoldersScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
-        Expanded(
-          child: GridView.builder(
-            controller: _scrollController,
-            physics: const BouncingScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 8.0,
-              mainAxisSpacing: 8.0,
-              childAspectRatio: 0.9,
-            ),
-            itemCount: folders.length,
-            itemBuilder: (context, index) {
-              return _buildFolderItem(folders[index]);
-            },
+        GridView.builder(
+          controller: _scrollController,
+          physics: const BouncingScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 8.0,
+            mainAxisSpacing: 8.0,
+            childAspectRatio: 0.9,
           ),
+          itemCount: folders.length,
+          itemBuilder: (context, index) {
+            return _buildFolderItem(folders[index]);
+          },
         ),
         Positioned(
           bottom: 20.0,
@@ -111,7 +109,9 @@ class _FoldersScreenState extends State<FoldersScreen> {
             const SizedBox(height: 8.0),
             Text(
               folder['folderName'],
-              style: const TextStyle(fontSize: 16.0, color: Colors.white),
+              style: TextStyle(
+                  fontSize: 16.0,
+                  color: Theme.of(context).textTheme.titleLarge?.color),
             ),
           ],
         ),

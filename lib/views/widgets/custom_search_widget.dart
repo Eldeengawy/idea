@@ -11,13 +11,18 @@ class CustomSearchWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: const Color(0xff1d1b1e),
+        border: Theme.of(context).textTheme.titleLarge?.color == Colors.white
+            ? Border.all(color: Colors.transparent)
+            : Border.all(),
+        color: Theme.of(context).textTheme.titleLarge?.color == Colors.white
+            ? const Color(0xff1d1b1e)
+            : Colors.white,
       ),
       child: Row(
         children: [
-          const Icon(
+          Icon(
             FeatherIcons.search,
-            color: Colors.white,
+            color: Theme.of(context).textTheme.titleLarge?.color,
             size: 24,
           ),
           const SizedBox(width: 8),

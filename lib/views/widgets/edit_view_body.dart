@@ -46,7 +46,7 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    // color: Colors.white,
                   ),
             ),
             const SizedBox(height: 20),
@@ -74,10 +74,12 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
       controller: controller,
       style: hintText == 'Title'
           ? Theme.of(context).textTheme.titleLarge!.copyWith(
-              fontSize: 26, color: Colors.white, fontWeight: FontWeight.bold)
+              fontSize: 26,
+              //  color: Colors.white,
+              fontWeight: FontWeight.bold)
           : Theme.of(context).textTheme.bodySmall!.copyWith(
                 fontSize: 16,
-                color: Colors.white,
+                // color: Colors.white,
               ),
       maxLines: maxLines,
       decoration: InputDecoration(
