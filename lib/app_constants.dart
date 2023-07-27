@@ -11,8 +11,8 @@ abstract class AppThemes {
     useMaterial3: true,
     scaffoldBackgroundColor: const Color(0xff0c0a0b),
     colorScheme: const ColorScheme.dark(
-      primary:
-          Colors.orange, // Customize the primary color for dark theme if needed
+      // primary:
+      //     Colors.orange, // Customize the primary color for dark theme if needed
       onPrimary:
           defaultTextColorDark, // Set the default text color for dark theme
     ),
