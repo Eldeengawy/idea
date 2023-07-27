@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:idea/views/models/note_model.dart';
+import 'package:idea/views/widgets/custom_save_button.dart';
 
 class EditNoteViewBody extends StatefulWidget {
   final Note? note; // Note object to be edited, nullable
@@ -60,48 +61,7 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
                   maxLines: 10),
             ),
             const SizedBox(height: 20.0),
-            Container(
-              width: 200, // Customize the width as needed
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30.0),
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFFfea031), // Starting gradient color
-                    Color(0xFFee7905), // Starting gradient color
-                    Color(0xFFee5453), // Starting gradient color
-                    Color(0xFFfd5b6d), // Starting gradient color
-                    Color(0xFFeb2774), // Starting gradient color
-                    Color(0xFFd50382), // Starting gradient color
-                    // Color(0xFF3366FF), // Starting gradient color
-                    // Color(0xFF00CCFF), // Ending gradient color
-                  ],
-                ),
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  // Add your logic to save the note here
-                },
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: 0, // Set text color to white
-                ),
-                child: Text(
-                  'Save Note',
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ),
-            ),
+            const CustomSaveButton(),
           ],
         ),
       ),
