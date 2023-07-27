@@ -6,7 +6,7 @@ part of 'note_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class NoteAdapter extends TypeAdapter<NoteModel> {
+class NoteModelAdapter extends TypeAdapter<NoteModel> {
   @override
   final int typeId = 0;
 
@@ -20,7 +20,7 @@ class NoteAdapter extends TypeAdapter<NoteModel> {
       date: fields[3] as String?,
       title: fields[0] as String?,
       content: fields[1] as String?,
-      color: fields[2] as Color?,
+      color: fields[2] as int?,
       folderName: fields[4] as String?,
     );
   }
@@ -47,7 +47,7 @@ class NoteAdapter extends TypeAdapter<NoteModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is NoteAdapter &&
+      other is NoteModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

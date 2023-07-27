@@ -54,42 +54,51 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
       title: "What is Lorem Ipsum?",
       content:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      date: '27/7/2023',
     ),
     NoteModel(
       title: "Why do we use it?",
       content: "This is the content of Note 2. It has a longer text.",
+      date: '27/7/2023',
     ),
     NoteModel(
       title: "Note 3",
       content: "Short content.",
+      date: '27/7/2023',
     ),
     NoteModel(
       title: "Where does it come from?",
       content:
           'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
+      date: '',
     ),
     NoteModel(
       title: "Note 5",
       content:
           "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
+      date: '27/7/2023',
     ),
     NoteModel(
       title: "Note 6",
       content:
           "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
+      date: '27/7/2023',
     ),
     NoteModel(
       title: "Note 7",
       content: "Short content.",
+      date: '27/7/2023',
     ),
     NoteModel(
       title: "Note 8",
       content: "Short content.",
+      date: '27/7/2023',
     ),
     NoteModel(
       title: "Note 9",
       content:
           "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
+      date: '27/7/2023',
     ),
   ];
   final ScrollController _scrollController = ScrollController();
@@ -147,8 +156,11 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
         return AddNoteBottomSheet(
           onAddFolder:
               (String title, String content, Color color, String folderName) {
-            NoteModel note =
-                NoteModel(title: title, content: content, color: color);
+            NoteModel note = NoteModel(
+                title: title,
+                content: content,
+                color: color.value,
+                date: DateTime.now().toString());
 
             setState(() {
               notes.add(note);
@@ -172,11 +184,11 @@ class NoteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor = note!.color ??
+    final int backgroundColor = note!.color ??
         (Theme.of(context).textTheme.titleLarge?.color == Colors.white
-            ? const Color(0xff17181a) // Dark theme primary text color is white
-            : Colors.white
-                .withOpacity(0.9)); // Light theme primary text color is amber
+            ? const Color(0xff17181a)
+                .value // Dark theme primary text color is white
+            : Colors.white.value);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -187,17 +199,20 @@ class NoteWidget extends StatelessWidget {
                     )));
       },
       child: Container(
-        decoration: BoxDecoration(boxShadow: [
-          Theme.of(context).textTheme.titleLarge?.color == Colors.black
-              ? BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 4,
-                  offset:
-                      const Offset(0, 2), // Adjust the position of the shadow
-                )
-              : const BoxShadow(),
-        ], color: backgroundColor, borderRadius: BorderRadius.circular(30.0)),
+        decoration: BoxDecoration(
+            boxShadow: [
+              Theme.of(context).textTheme.titleLarge?.color == Colors.black
+                  ? BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: const Offset(
+                          0, 2), // Adjust the position of the shadow
+                    )
+                  : const BoxShadow(),
+            ],
+            color: Color(backgroundColor),
+            borderRadius: BorderRadius.circular(30.0)),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(

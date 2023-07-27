@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'note_model.g.dart';
@@ -10,14 +9,14 @@ class NoteModel extends HiveObject {
   @HiveField(1)
   final String? content;
   @HiveField(2)
-  final Color? color;
+  final int? color;
   @HiveField(3)
   final String? date;
   @HiveField(4)
   final String? folderName;
 
   NoteModel({
-    this.date,
+    required this.date,
     required this.title,
     required this.content,
     this.color,
