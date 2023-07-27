@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Note {
-  String title;
-  String content;
-  Color? color;
-  String? folderName;
+  final String? title;
+  final String? content;
+  final Color? color;
+  final String? date;
+  final String? folderName;
 
   Note({
+    this.date,
     required this.title,
     required this.content,
     this.color,

@@ -109,7 +109,7 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
             controller: _scrollController,
             itemBuilder: (context, index) {
               return Hero(
-                tag: notes[index].title,
+                tag: notes[index].title!,
                 child: NoteWidget(
                   // title: notes[index].title,
                   // content: notes[index].content,
@@ -194,7 +194,7 @@ class NoteWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                note!.title,
+                note!.title!,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontSize: 18,
                     color: Colors.white,
@@ -202,7 +202,7 @@ class NoteWidget extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                note!.content,
+                note!.content!,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                     fontSize: 14, color: Colors.white.withOpacity(0.6)),
               ),

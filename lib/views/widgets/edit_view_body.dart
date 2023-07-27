@@ -20,8 +20,8 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
     super.initState();
     // Populate the text fields if a Note object is provided
     if (widget.note != null) {
-      _titleController.text = widget.note!.title;
-      _contentController.text = widget.note!.content;
+      _titleController.text = widget.note!.title!;
+      _contentController.text = widget.note!.content!;
     }
   }
 

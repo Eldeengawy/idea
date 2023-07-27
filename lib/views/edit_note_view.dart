@@ -11,7 +11,7 @@ class EditNoteView extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xff1b1b1f),
       body: Hero(
-        tag: note!.title,
+        tag: note!.title!,
         child: EditNoteViewBody(
           note: note,
         ),
