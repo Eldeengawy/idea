@@ -105,13 +105,18 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
             mainAxisSpacing: 8,
             crossAxisSpacing: 8,
             itemCount: notes.length,
+            physics: const BouncingScrollPhysics(),
             controller: _scrollController,
             itemBuilder: (context, index) {
-              return NoteWidget(
-                title: notes[index].title,
-                content: notes[index].content,
-                // color: const Color(0xffda892b),
-                color: notes[index].color ?? const Color(0xff17181a),
+              return Hero(
+                tag: notes[index].title,
+                child: NoteWidget(
+                  // title: notes[index].title,
+                  // content: notes[index].content,
+                  // color: const Color(0xffda892b),
+                  // color: notes[index].color ?? const Color(0xff17181a),
+                  note: notes[index],
+                ),
               );
             },
           ),
@@ -159,38 +164,47 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
 }
 
 class NoteWidget extends StatelessWidget {
-  final String? title;
-  final String? content;
-  final Color? color;
+  // final String? title;
+  // final String? content;
+  // final Color? color;
+  final Note? note;
 
-  const NoteWidget({super.key, this.title, this.content, this.color});
+  const NoteWidget({super.key, required this.note});
 
   @override
   Widget build(BuildContext context) {
+    final Color backgroundColor = note!.color ??
+        const Color(0xff17181a); // If color is null, use the default color
+
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const EditNoteView()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => EditNoteView(
+                      note: note,
+                    )));
       },
       child: Container(
         decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.circular(30.0)),
+            color: backgroundColor, borderRadius: BorderRadius.circular(30.0)),
         child: Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                title!,
-                style: const TextStyle(
+                note!.title,
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontSize: 18,
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               Text(
-                content!,
-                style: const TextStyle(fontSize: 14, color: Colors.white),
+                note!.content,
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    fontSize: 14, color: Colors.white.withOpacity(0.6)),
               ),
             ],
           ),

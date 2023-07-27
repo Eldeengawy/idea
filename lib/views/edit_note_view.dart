@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:idea/views/models/note_model.dart';
 import 'package:idea/views/widgets/edit_view_body.dart';
 
 class EditNoteView extends StatelessWidget {
-  const EditNoteView({super.key});
+  final Note? note;
+  const EditNoteView({super.key, required this.note});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: EditNoteViewBody(),
+    return Scaffold(
+      backgroundColor: const Color(0xff1b1b1f),
+      body: Hero(
+        tag: note!.title,
+        child: EditNoteViewBody(
+          note: note,
+        ),
+      ),
     );
   }
 }
