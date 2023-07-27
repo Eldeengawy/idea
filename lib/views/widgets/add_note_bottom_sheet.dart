@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-class AddNoteBottomSheet extends StatefulWidget {
+class AddNoteForm extends StatefulWidget {
   final void Function(
       String title, String content, Color color, String folderName) onAddFolder;
 
-  const AddNoteBottomSheet({Key? key, required this.onAddFolder})
-      : super(key: key);
+  const AddNoteForm({Key? key, required this.onAddFolder}) : super(key: key);
 
   @override
-  _AddNoteBottomSheetState createState() => _AddNoteBottomSheetState();
+  _AddNoteFormState createState() => _AddNoteFormState();
 }
 
-class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
+class _AddNoteFormState extends State<AddNoteForm> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _subjectController = TextEditingController();
-  final String _selectedFolderName = '';
   Color _selectedColor = const Color(0xff17181a); // Default color
   final GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-  String? title, content;
 
   void _showColorPicker() {
     showDialog(
@@ -49,7 +46,6 @@ class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                // You can also handle the color picking here if needed
               },
               child: const Text('OK'),
             ),
@@ -66,124 +62,147 @@ class _AddNoteBottomSheetState extends State<AddNoteBottomSheet> {
     super.dispose();
   }
 
+  void _submitForm() {
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+      String title = _titleController.text;
+      String subject = _subjectController.text;
+      String folderName = ''; // Replace with actual folder name logic
+      widget.onAddFolder(title, subject, _selectedColor, folderName);
+      Navigator.pop(context);
+    } else {
+      setState(() {
+        autovalidateMode = AutovalidateMode.always;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: formKey,
-          autovalidateMode: autovalidateMode,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
-                onSaved: (value) {
-                  title = value;
-                },
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Field is required';
-                  }
-                  return null;
-                },
-                controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                onSaved: (value) {
-                  content = value;
-                },
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Field is required';
-                  }
-                  return null;
-                },
-                controller: _subjectController,
-                decoration: const InputDecoration(labelText: 'Subject'),
-              ),
-              const SizedBox(height: 12),
-              // ColorPicker(
-              // onColorChanged: (color) {
-              // Implement color picker logic here
-
-              const SizedBox(height: 12),
-              // _buildFolderDropdown(),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 18.0),
-                        backgroundColor: const Color(0xffff9e37),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        elevation: 4,
-                      ),
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          formKey.currentState!.save();
-                          String title = _titleController.text;
-                          String subject = _subjectController.text;
-                          Color color = _selectedColor;
-                          String folderName = _selectedFolderName;
-                          widget.onAddFolder(title, subject, color, folderName);
-                          Navigator.pop(context);
-                        } else {
-                          autovalidateMode = AutovalidateMode.always;
-                          setState(() {});
-                        }
-                      },
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.add, size: 24),
-                          SizedBox(width: 8),
-                          Text(
-                            'Add Note',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: formKey,
+            autovalidateMode: autovalidateMode,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextFormField(
+                  onSaved: (value) {
+                    // No need to store the value in class variables
+                  },
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Field is required';
+                    }
+                    return null;
+                  },
+                  controller: _titleController,
+                  decoration: const InputDecoration(labelText: 'Title'),
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  onSaved: (value) {
+                    // No need to store the value in class variables
+                  },
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Field is required';
+                    }
+                    return null;
+                  },
+                  controller: _subjectController,
+                  decoration: const InputDecoration(labelText: 'Subject'),
+                ),
+                const SizedBox(height: 12),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 18.0),
+                          backgroundColor: const Color(0xffff9e37),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
-                        ],
+                          elevation: 4,
+                        ),
+                        onPressed: _submitForm,
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.add, size: 24),
+                            SizedBox(width: 8),
+                            Text(
+                              'Add Note',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 20.0,
-                  ),
-                  CircleAvatar(
-                    radius: 30.0,
-                    backgroundColor: Colors.blueGrey,
-                    child: IconButton(
-                      onPressed: () {
-                        _showColorPicker();
-                      },
-                      icon: const Icon(Icons.color_lens),
-
-                      // },
-                      // pickerColor: _selectedColor,
+                    const SizedBox(
+                      width: 20.0,
                     ),
-                  ),
-                ],
-              )
-            ],
+                    ColorPickerButton(
+                      selectedColor: _selectedColor,
+                      onPressed: () => _showColorPicker(),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class ColorPickerButton extends StatelessWidget {
+  final Color selectedColor;
+  final VoidCallback onPressed;
+
+  const ColorPickerButton({
+    Key? key,
+    required this.selectedColor,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: 30.0,
+      backgroundColor: Colors.blueGrey,
+      child: IconButton(
+        onPressed: onPressed,
+        icon: const Icon(Icons.color_lens),
       ),
     );
   }
+}
 
-  Widget _buildFolderDropdown() {
-    // Implement folder dropdown logic here
-    // You can use DropdownButtonFormField to select from existing folders
-    // Or create a separate bottom sheet to create a new folder
-    return Container();
+class AddNoteBottomSheet extends StatelessWidget {
+  final void Function(
+      String title, String content, Color color, String folderName) onAddFolder;
+
+  const AddNoteBottomSheet({Key? key, required this.onAddFolder})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height:
+          600, // Specify your desired fixed height here SingleChildScrollView(
+      child: AddNoteForm(onAddFolder: onAddFolder),
+    );
   }
 }
