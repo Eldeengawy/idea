@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idea/cubits/notes_cubit/notes_cubit_cubit.dart';
 import 'package:idea/views/widgets/custom_notes_grid_view.dart';
 import 'package:idea/views/widgets/folders_screen.dart';
 
@@ -62,12 +64,15 @@ class _PageViewWithToggleButtonsState extends State<PageViewWithToggleButtons> {
                     index; // Update selectedIndex to sync with PageView index
               });
             },
-            children: const [
+            children: [
               // Screen 1 (All Notes),
-              NotesStaggeredGrid(),
+              BlocProvider(
+                create: (context) => NotesCubit(),
+                child: const NotesStaggeredGrid(),
+              ),
 
               // Screen 2 (Folders),
-              FoldersScreen(),
+              const FoldersScreen(),
             ],
           ),
         ),

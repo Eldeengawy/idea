@@ -22,6 +22,7 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<NotesCubit>(context).fetchAllNotes();
 
     // Add a listener to the ScrollController
     _scrollController.addListener(_onScroll);
@@ -51,103 +52,102 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
     }
   }
 
-  final List<NoteModel> notes = [
-    NoteModel(
-      title: "What is Lorem Ipsum?",
-      content:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      date: '27/7/2023',
-    ),
-    NoteModel(
-      title: "Why do we use it?",
-      content: "This is the content of Note 2. It has a longer text.",
-      date: '27/7/2023',
-    ),
-    NoteModel(
-      title: "Note 3",
-      content: "Short content.",
-      date: '27/7/2023',
-    ),
-    NoteModel(
-      title: "Where does it come from?",
-      content:
-          'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
-      date: '',
-    ),
-    NoteModel(
-      title: "Note 5",
-      content:
-          "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
-      date: '27/7/2023',
-    ),
-    NoteModel(
-      title: "Note 6",
-      content:
-          "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
-      date: '27/7/2023',
-    ),
-    NoteModel(
-      title: "Note 7",
-      content: "Short content.",
-      date: '27/7/2023',
-    ),
-    NoteModel(
-      title: "Note 8",
-      content: "Short content.",
-      date: '27/7/2023',
-    ),
-    NoteModel(
-      title: "Note 9",
-      content:
-          "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
-      date: '27/7/2023',
-    ),
-  ];
+  // final List<NoteModel> notes = [
+  //   NoteModel(
+  //     title: "What is Lorem Ipsum?",
+  //     content:
+  //         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+  //     date: '27/7/2023',
+  //   ),
+  //   NoteModel(
+  //     title: "Why do we use it?",
+  //     content: "This is the content of Note 2. It has a longer text.",
+  //     date: '27/7/2023',
+  //   ),
+  //   NoteModel(
+  //     title: "Note 3",
+  //     content: "Short content.",
+  //     date: '27/7/2023',
+  //   ),
+  //   NoteModel(
+  //     title: "Where does it come from?",
+  //     content:
+  //         'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',
+  //     date: '',
+  //   ),
+  //   NoteModel(
+  //     title: "Note 5",
+  //     content:
+  //         "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
+  //     date: '27/7/2023',
+  //   ),
+  //   NoteModel(
+  //     title: "Note 6",
+  //     content:
+  //         "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
+  //     date: '27/7/2023',
+  //   ),
+  //   NoteModel(
+  //     title: "Note 7",
+  //     content: "Short content.",
+  //     date: '27/7/2023',
+  //   ),
+  //   NoteModel(
+  //     title: "Note 8",
+  //     content: "Short content.",
+  //     date: '27/7/2023',
+  //   ),
+  //   NoteModel(
+  //     title: "Note 9",
+  //     content:
+  //         "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here',",
+  //     date: '27/7/2023',
+  //   ),
+  // ];
   final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return BlocProvider(
-      create: (context) => NotesCubit(),
-      child: Stack(
-        children: [
-          MasonryGridView.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 8,
-            itemCount: notes.length,
-            physics: const BouncingScrollPhysics(),
-            controller: _scrollController,
-            itemBuilder: (context, index) {
-              return Hero(
-                tag: notes[index].title!,
-                child: NoteWidget(
-                  // title: notes[index].title,
-                  // content: notes[index].content,
-                  // color: const Color(0xffda892b),
-                  // color: notes[index].color ?? const Color(0xff17181a),
-                  note: notes[index],
-                ),
-              );
-            },
-          ),
-          // if (_isButtonVisible)
-          Positioned(
-            bottom: 20.0,
-            left: screenWidth / 6,
-            child: Crab(
-              tag: 'addButton',
-              child: CustomCircularButton(
-                onTapFunction: () => showAddFolderBottomSheet(context),
-                title: 'Add New Note',
-                isButtonVisible: _isButtonVisible,
-              ),
+    return Stack(
+      children: [
+        BlocBuilder<NotesCubit, NotesState>(
+          builder: (context, state) {
+            List<NoteModel> notes =
+                BlocProvider.of<NotesCubit>(context).notes ?? [];
+            return MasonryGridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              itemCount: notes.length,
+              physics: const BouncingScrollPhysics(),
+              controller: _scrollController,
+              itemBuilder: (context, index) {
+                return Hero(
+                  tag: notes[index].title!,
+                  child: NoteWidget(
+                    note: notes[index],
+                  ),
+                );
+              },
+            );
+          },
+        ),
+        // if (_isButtonVisible)
+        Positioned(
+          bottom: 20.0,
+          left: screenWidth / 6,
+          child: Crab(
+            tag: 'addButton',
+            child: CustomCircularButton(
+              onTapFunction: () => showAddFolderBottomSheet(context),
+              title: 'Add New Note',
+              isButtonVisible: _isButtonVisible,
             ),
           ),
-          const SizedBox(height: 50),
-        ],
-      ),
+        ),
+        const SizedBox(height: 50),
+      ],
     );
   }
 
@@ -168,7 +168,7 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
                 date: DateTime.now().toString());
 
             setState(() {
-              notes.add(note);
+              // notes.add(note);
             });
             // Navigator.pop(
             //     context); // Close the bottom sheet after adding folder
