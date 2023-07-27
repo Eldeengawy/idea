@@ -43,3 +43,5 @@ abstract class AppThemes {
 
 bool isNightMode =
     true; // This is not related to the font, just leaving it as it is.
+
+const kNotesBox = 'notes_box';
