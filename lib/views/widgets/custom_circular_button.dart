@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 
 class CustomCircularButton extends StatelessWidget {
   const CustomCircularButton(
-      {super.key, required this.onTapFunction, required this.title});
+      {super.key,
+      required this.onTapFunction,
+      required this.title,
+      required this.isButtonVisible});
   final void Function()? onTapFunction;
   final String? title;
+  final bool isButtonVisible;
 
   @override
   Widget build(
@@ -12,7 +16,10 @@ class CustomCircularButton extends StatelessWidget {
   ) {
     return GestureDetector(
       onTap: onTapFunction,
-      child: Container(
+      child: AnimatedContainer(
+        height: isButtonVisible ? 70 : 0,
+        width: isButtonVisible ? 250 : 125,
+        duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             begin: Alignment.topCenter,
@@ -22,17 +29,19 @@ class CustomCircularButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(30.0),
         ),
         padding: const EdgeInsets.all(16.0),
-        height: 70.0,
-        width: 250.0,
+        // height: 70.0,
+        // width: 250.0,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.add),
+            Icon(Icons.add, size: isButtonVisible ? 22.0 : 0),
             const SizedBox(width: 8.0),
             Text(
               '$title',
-              style:
-                  const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: isButtonVisible ? 16.0 : 0,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
