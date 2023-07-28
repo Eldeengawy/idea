@@ -74,7 +74,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
       formKey.currentState!.save();
       String title = _titleController.text;
       String content = _subjectController.text;
-      String folderName = ''; // Replace with actual folder name logic
+      // String folderName = ''; // Replace with actual folder name logic
       // widget.onAddFolder(title, content, _selectedColor, folderName);
       // Navigator.pop(context);
       // Format the date in your desired format
