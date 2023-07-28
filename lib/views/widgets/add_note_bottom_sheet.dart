@@ -6,11 +6,13 @@ import 'package:idea/cubits/notes_cubit/notes_cubit_cubit.dart';
 import 'package:idea/views/widgets/add_note_form.dart';
 
 class AddNoteBottomSheet extends StatelessWidget {
-  final void Function(
-      String title, String content, Color color, String folderName) onAddFolder;
+  // final void Function(
+  //     String title, String content, Color color, String folderName) onAddFolder;
 
-  const AddNoteBottomSheet({Key? key, required this.onAddFolder})
-      : super(key: key);
+  const AddNoteBottomSheet({
+    Key? key,
+    // required this.onAddFolder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class AddNoteBottomSheet extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom),
-              child: AddNoteForm(onAddFolder: onAddFolder),
+              child: const AddNoteForm(),
             ),
           );
         },

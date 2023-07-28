@@ -4,8 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:idea/app_constants.dart';
 import 'package:idea/constants/bloc_observer.dart';
+import 'package:idea/cubits/add_folder_cubit/add_folder_cubit.dart';
 import 'package:idea/cubits/change_mode_cubit/change_mode_cubit.dart';
+import 'package:idea/cubits/folders_cubit/folders_cubit_cubit.dart';
 import 'package:idea/cubits/notes_cubit/notes_cubit_cubit.dart';
+import 'package:idea/models/folder_model.dart';
 import 'package:idea/models/note_model.dart';
 import 'package:idea/views/notes_view.dart';
 
@@ -13,7 +16,9 @@ void main() async {
   await Hive.initFlutter();
   Bloc.observer = MyBlocObserver();
   Hive.registerAdapter(NoteModelAdapter());
+  Hive.registerAdapter(FolderModelAdapter());
   await Hive.openBox<NoteModel>(kNotesBox);
+  await Hive.openBox<FolderModel>(kFoldersBox);
   runApp(const MyApp());
 }
 
@@ -34,6 +39,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         // BlocProvider(create: (context) => AddNoteCubit()),
+        BlocProvider(create: (context) => AddFolderCubit()),
+        // BlocProvider(create: (context) => FoldersCubit()),
         BlocProvider(
           create: (context) => ChangeModeCubit(),
         )
@@ -42,16 +49,19 @@ class MyApp extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return BlocProvider(
-            create: (BuildContext context) => NotesCubit(),
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Idea',
-              theme: ChangeModeCubit.get(context).isDarkMode
-                  ? AppThemes.darkTheme
-                  : AppThemes
-                      .lightTheme, // Set the theme based on isNightMode flag
+            create: (context) => FoldersCubit(),
+            child: BlocProvider(
+              create: (BuildContext context) => NotesCubit(),
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Idea',
+                theme: ChangeModeCubit.get(context).isDarkMode
+                    ? AppThemes.darkTheme
+                    : AppThemes
+                        .lightTheme, // Set the theme based on isNightMode flag
 
-              home: const NotesView(),
+                home: const NotesView(),
+              ),
             ),
           );
         },

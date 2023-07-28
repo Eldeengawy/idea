@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class CustomSaveButton extends StatelessWidget {
   const CustomSaveButton({
     super.key,
+    required this.onPressed,
   });
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +29,7 @@ class CustomSaveButton extends StatelessWidget {
         ),
       ),
       child: ElevatedButton(
-        onPressed: () {
-          // Add your logic to save the note here
-        },
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16),

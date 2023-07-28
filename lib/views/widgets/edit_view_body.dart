@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idea/cubits/notes_cubit/notes_cubit_cubit.dart';
 import 'package:idea/models/note_model.dart';
 import 'package:idea/views/widgets/custom_save_button.dart';
 
@@ -51,7 +53,7 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: _buildTextField(_titleController, 'Title'),
+              child: _buildTextField(_titleController, 'Title', maxLines: 4),
             ),
             const SizedBox(height: 20),
             Expanded(
@@ -61,7 +63,15 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
                   maxLines: 10),
             ),
             const SizedBox(height: 20.0),
-            const CustomSaveButton(),
+            CustomSaveButton(
+              onPressed: () {
+                widget.note!.title = _titleController.text;
+                widget.note!.content = _contentController.text;
+                widget.note!.save();
+                BlocProvider.of<NotesCubit>(context).fetchAllNotes();
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),

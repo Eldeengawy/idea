@@ -7,10 +7,12 @@ import 'package:idea/views/widgets/color_pick_button.dart';
 import 'package:intl/intl.dart'; // Import the intl package
 
 class AddNoteForm extends StatefulWidget {
-  final void Function(
-      String title, String content, Color color, String folderName) onAddFolder;
+  // final void Function(
+  //     String title, String content, Color color, String folderName) onAddFolder;
 
-  const AddNoteForm({Key? key, required this.onAddFolder}) : super(key: key);
+  const AddNoteForm({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _AddNoteFormState createState() => _AddNoteFormState();
@@ -73,7 +75,7 @@ class _AddNoteFormState extends State<AddNoteForm> {
       String title = _titleController.text;
       String content = _subjectController.text;
       String folderName = ''; // Replace with actual folder name logic
-      widget.onAddFolder(title, content, _selectedColor, folderName);
+      // widget.onAddFolder(title, content, _selectedColor, folderName);
       // Navigator.pop(context);
       // Format the date in your desired format
       DateTime now = DateTime.now();

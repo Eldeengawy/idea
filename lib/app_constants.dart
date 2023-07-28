@@ -98,3 +98,4 @@ abstract class AppThemes {
 }
 
 const kNotesBox = 'notes_box';
+const kFoldersBox = 'folders_box';
