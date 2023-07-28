@@ -5,6 +5,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:idea/app_constants.dart';
 import 'package:idea/constants/bloc_observer.dart';
 import 'package:idea/cubits/change_mode_cubit/change_mode_cubit.dart';
+import 'package:idea/cubits/notes_cubit/notes_cubit_cubit.dart';
 import 'package:idea/models/note_model.dart';
 import 'package:idea/views/notes_view.dart';
 
@@ -40,15 +41,18 @@ class MyApp extends StatelessWidget {
       child: BlocConsumer<ChangeModeCubit, ChangeModeState>(
         listener: (context, state) {},
         builder: (context, state) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Idea',
-            theme: ChangeModeCubit.get(context).isDarkMode
-                ? AppThemes.darkTheme
-                : AppThemes
-                    .lightTheme, // Set the theme based on isNightMode flag
+          return BlocProvider(
+            create: (BuildContext context) => NotesCubit(),
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Idea',
+              theme: ChangeModeCubit.get(context).isDarkMode
+                  ? AppThemes.darkTheme
+                  : AppThemes
+                      .lightTheme, // Set the theme based on isNightMode flag
 
-            home: const NotesView(),
+              home: const NotesView(),
+            ),
           );
         },
       ),

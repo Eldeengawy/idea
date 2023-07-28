@@ -170,6 +170,7 @@ class NoteWidget extends StatelessWidget {
                   // For this example, let's assume the delete method is defined in the NotesCubit
                   // BlocProvider.of<NotesCubit>(context).deleteNote(note);
                   note!.delete();
+                  BlocProvider.of<NotesCubit>(context).fetchAllNotes();
                   Navigator.pop(context); // Close the dialog
                 },
                 child: const Text('Delete'),
@@ -215,12 +216,15 @@ class NoteWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    note!.title!,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  SizedBox(
+                    width: 110,
+                    child: Text(
+                      note!.title!,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
                   ),
                   IconButton(
                     onPressed: _showDeleteConfirmationDialog,
