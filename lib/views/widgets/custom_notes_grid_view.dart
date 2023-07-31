@@ -3,14 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:idea/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:idea/cubits/notes_cubit/notes_cubit_cubit.dart';
 import 'package:idea/models/note_model.dart';
-import 'package:idea/views/widgets/add_note_bottom_sheet.dart';
+import 'package:idea/views/widgets/add_note_to_folder_bottom_sheet.dart';
+import 'package:idea/views/widgets/add_note_to_general_bottom_sheet.dart';
 import 'package:idea/views/widgets/custom_circular_button.dart';
 import 'package:idea/views/widgets/note_view.dart';
 
 class NotesStaggeredGrid extends StatefulWidget {
-  const NotesStaggeredGrid({super.key});
+  const NotesStaggeredGrid(
+      {super.key,
+      required this.notes,
+      required this.onTapButton,
+      required this.folderName});
+  final List<NoteModel> notes;
+  final void Function()? onTapButton;
+  final String folderName;
 
   @override
   State<NotesStaggeredGrid> createState() => _NotesStaggeredGridState();
@@ -59,26 +68,19 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
-        BlocBuilder<NotesCubit, NotesState>(
-          builder: (context, state) {
-            List<NoteModel> notes =
-                BlocProvider.of<NotesCubit>(context).notes ?? [];
-
-            return MasonryGridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              itemCount: notes.length,
-              physics: const BouncingScrollPhysics(),
-              controller: _scrollController,
-              itemBuilder: (context, index) {
-                return Hero(
-                  tag: notes[index].title!,
-                  child: NoteWidget(
-                    note: notes[index],
-                  ),
-                );
-              },
+        MasonryGridView.count(
+          crossAxisCount: 2,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 8,
+          itemCount: widget.notes.length,
+          physics: const BouncingScrollPhysics(),
+          controller: _scrollController,
+          itemBuilder: (context, index) {
+            return Hero(
+              tag: widget.notes[index].title!,
+              child: NoteWidget(
+                note: widget.notes[index],
+              ),
             );
           },
         ),
@@ -89,7 +91,8 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
           child: Crab(
             tag: 'addButton',
             child: CustomCircularButton(
-              onTapFunction: () => showAddFolderBottomSheet(context),
+              onTapFunction: () =>
+                  showAddFolderBottomSheet(context, widget.folderName),
               title: 'Add New Note',
               isButtonVisible: _isButtonVisible,
             ),
@@ -100,29 +103,20 @@ class _NotesStaggeredGridState extends State<NotesStaggeredGrid> {
     );
   }
 
-  showAddFolderBottomSheet(BuildContext context) {
+  showAddFolderBottomSheet(BuildContext context, String folderName) {
     showModalBottomSheet(
       isDismissible: false,
       showDragHandle: true,
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return const AddNoteBottomSheet(
-            // onAddFolder:
-            //     (String title, String content, Color color, String folderName) {
-            //   NoteModel note = NoteModel(
-            //       title: title,
-            //       content: content,
-            //       color: color.value,
-            //       date: DateTime.now().toString());
-
-            //   setState(() {
-            //     // notes.add(note);
-            //   });
-            //   // Navigator.pop(
-            //   //     context); // Close the bottom sheet after adding folder
-            // },
-            );
+        return folderName == ''
+            ? const AddNoteBottomSheet()
+            : BlocProvider(
+                create: (BuildContext context) => AddNoteCubit(),
+                child: AddNoteToFolderBottomSheet(
+                  folderName: folderName,
+                ));
       },
     );
   }

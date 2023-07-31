@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:hive/hive.dart';
+import 'package:idea/app_constants.dart';
 import 'package:idea/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:idea/cubits/folders_cubit/folders_cubit_cubit.dart';
 import 'package:idea/models/folder_model.dart';
@@ -8,19 +10,21 @@ import 'package:idea/models/note_model.dart';
 import 'package:idea/views/widgets/color_pick_button.dart';
 import 'package:intl/intl.dart'; // Import the intl package
 
-class AddNoteForm extends StatefulWidget {
+class AddNoteToFolderForm extends StatefulWidget {
+  final String folderName;
   // final void Function(
   //     String title, String content, Color color, String folderName) onAddFolder;
 
-  const AddNoteForm({
+  const AddNoteToFolderForm({
     Key? key,
+    required this.folderName,
   }) : super(key: key);
 
   @override
-  _AddNoteFormState createState() => _AddNoteFormState();
+  _AddNoteToFolderFormState createState() => _AddNoteToFolderFormState();
 }
 
-class _AddNoteFormState extends State<AddNoteForm> {
+class _AddNoteToFolderFormState extends State<AddNoteToFolderForm> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _subjectController = TextEditingController();
   Color _selectedColor = const Color(0xff17181a); // Default color
@@ -83,12 +87,26 @@ class _AddNoteFormState extends State<AddNoteForm> {
       DateTime now = DateTime.now();
 
       String formattedDate = DateFormat('dd/MM/yyyy hh:mm a').format(now);
+
       var noteModel = NoteModel(
           title: title,
           content: content,
           date: formattedDate,
-          folderName: selectedFolder);
+          folderName: 'some folder');
+      BlocProvider.of<AddNoteCubit>(context).selectedfolder = widget.folderName;
+      var folderBox = Hive.box<FolderModel>(kFoldersBox);
+      var folders = folderBox.values.toList();
+      var selectedFolderString =
+          BlocProvider.of<AddNoteCubit>(context).selectedfolder;
+      var selectedFolder = folderBox.values
+          .firstWhere((folder) => folder.name == selectedFolderString);
       BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
+      BlocProvider.of<FoldersCubit>(context)
+          .fetchNotesForFolder(selectedFolder);
+      Navigator.pop(context);
+      // BlocProvider.of<NotesCubit>(context).fetchAllNotes();
+      // BlocProvider.of<FoldersCubit>(context).fetchAllFolders();
+      // BlocProvider.of<NotesCubit>(context).featchAllNotes();
     } else {
       setState(() {
         autovalidateMode = AutovalidateMode.always;
@@ -96,22 +114,8 @@ class _AddNoteFormState extends State<AddNoteForm> {
     }
   }
 
-  // List<String> folders = [
-  //   'Folder 1',
-  //   'Folder 2',
-  //   'Folder 3',
-  //   // Add more folder names here as needed
-  // ];
-
-  // String selectedFolder = 'Folder 1'; // To store the selected folder name
-  List<FolderModel> folders = [];
-  String selectedFolder = '';
-
   @override
   Widget build(BuildContext context) {
-    folders = BlocProvider.of<FoldersCubit>(context).folders!;
-    selectedFolder =
-        folders.isNotEmpty ? folders[0].name! : 'No folders available';
     return ListView(
       shrinkWrap: true,
       children: [
@@ -153,51 +157,6 @@ class _AddNoteFormState extends State<AddNoteForm> {
                 ),
                 const SizedBox(height: 12),
                 const SizedBox(height: 12),
-                // Dropdown button to choose a folder
-                // Dropdown button to choose a folder
-                DropdownButtonFormField<String>(
-                  value: selectedFolder,
-                  items: folders.map((FolderModel folder) {
-                    return DropdownMenuItem<String>(
-                      value: folder.name,
-                      child: Text(
-                        folder.name!,
-                        style:
-                            Theme.of(context).textTheme.bodySmall!.copyWith(),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedFolder = newValue!;
-                      BlocProvider.of<AddNoteCubit>(context).selectedfolder =
-                          newValue;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Select Folder',
-                    labelStyle:
-                        Theme.of(context).textTheme.titleLarge!.copyWith(
-                            // Set the label (hint) text color to white
-                            ),
-                    // You can also customize other decoration properties if needed
-                    // For example, you can set fillColor, filled, border, etc.
-                  ),
-                  style: const TextStyle(
-                    color: Colors
-                        .white, // Set the selected item text color to white
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select a folder';
-                    }
-                    return null;
-                  },
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

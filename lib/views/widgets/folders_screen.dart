@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idea/cubits/folders_cubit/folders_cubit_cubit.dart';
 import 'package:idea/models/folder_model.dart';
+import 'package:idea/views/folder_notes_view.dart';
 import 'package:idea/views/widgets/add_folder_bottom_sheet.dart';
 import 'package:idea/views/widgets/custom_circular_button.dart';
 
@@ -81,6 +82,7 @@ class _FoldersScreenState extends State<FoldersScreen> {
                 // note!.delete();
                 // BlocProvider.of<NotesCubit>(context).fetchAllNotes();
                 BlocProvider.of<FoldersCubit>(context).deleteSelectedFolders();
+                _isButtonVisible = true;
                 Navigator.pop(context); // Close the dialog
               },
               child: const Text('Delete'),
@@ -191,7 +193,15 @@ class _FoldersScreenState extends State<FoldersScreen> {
             ? () {
                 BlocProvider.of<FoldersCubit>(context).selectFolder(folder);
               }
-            : () {},
+            : () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FolderNotesView(
+                        folder: folder,
+                      ),
+                    ));
+              },
         onLongPress: () {
           BlocProvider.of<FoldersCubit>(context).isSelectionOpened = true;
           BlocProvider.of<FoldersCubit>(context).selectFolder(folder);
@@ -230,7 +240,15 @@ class _FoldersScreenState extends State<FoldersScreen> {
             ? () {
                 BlocProvider.of<FoldersCubit>(context).selectFolder(folder);
               }
-            : () {},
+            : () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FolderNotesView(
+                        folder: folder,
+                      ),
+                    ));
+              },
         onLongPress: () {
           BlocProvider.of<FoldersCubit>(context).isSelectionOpened = true;
           BlocProvider.of<FoldersCubit>(context).selectFolder(folder);

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idea/cubits/notes_cubit/notes_cubit_cubit.dart';
+import 'package:idea/models/note_model.dart';
 import 'package:idea/views/widgets/custom_notes_grid_view.dart';
 import 'package:idea/views/widgets/folders_screen.dart';
 
@@ -62,18 +65,31 @@ class _PageViewWithToggleButtonsState extends State<PageViewWithToggleButtons> {
                     index; // Update selectedIndex to sync with PageView index
               });
             },
-            children: const [
+            children: [
               // Screen 1 (All Notes),
-              NotesStaggeredGrid(),
+              BlocBuilder<NotesCubit, NotesState>(builder: (context, state) {
+                List<NoteModel> notes =
+                    BlocProvider.of<NotesCubit>(context).notes ?? [];
+                return NotesStaggeredGrid(
+                  notes: notes,
+                  onTapButton: () {},
+                  folderName: '',
+                );
+              }),
 
               // Screen 2 (Folders),
-              FoldersScreen(),
+              const FoldersScreen(),
             ],
           ),
         ),
       ],
     );
   }
+
+  //  BlocBuilder<NotesCubit, NotesState>(
+  //         builder: (context, state) {
+  //           List<NoteModel> notes =
+  //               BlocProvider.of<NotesCubit>(context).notes ?? [];
 
   Widget _buildButton(int index, String text) {
     final isSelected = selectedIndex == index;

@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       providers: [
         // BlocProvider(create: (context) => AddNoteCubit()),
         BlocProvider(create: (context) => AddFolderCubit()),
-        // BlocProvider(create: (context) => FoldersCubit()),
+        BlocProvider(create: (context) => FoldersCubit()..fetchAllFolders()),
         BlocProvider(
           create: (context) => ChangeModeCubit(),
         )
@@ -49,9 +49,9 @@ class MyApp extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           return BlocProvider(
-            create: (context) => FoldersCubit(),
+            create: (context) => FoldersCubit()..fetchAllFolders(),
             child: BlocProvider(
-              create: (BuildContext context) => NotesCubit(),
+              create: (BuildContext context) => NotesCubit()..fetchAllNotes(),
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: 'Idea',

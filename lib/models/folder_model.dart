@@ -15,5 +15,6 @@ class FolderModel extends HiveObject {
   FolderModel({
     required this.name,
     required this.iconCode,
-  });
+    List<NoteModel>? folderNotes, // Consider if folderNotes can be null or not
+  }) : folderNotes = folderNotes ?? []; // Initialize with an empty list if null
 }

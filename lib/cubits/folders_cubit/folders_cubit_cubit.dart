@@ -1,7 +1,8 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:idea/app_constants.dart';
 import 'package:idea/models/folder_model.dart';
+import 'package:idea/models/note_model.dart';
 import 'package:meta/meta.dart';
 
 part 'folders_cubit_state.dart';
@@ -9,6 +10,7 @@ part 'folders_cubit_state.dart';
 class FoldersCubit extends Cubit<FoldersState> {
   FoldersCubit() : super(FoldersInitial());
   List<FolderModel>? folders;
+  List<NoteModel>? folderNotes;
   List<FolderModel> selectedFolders = [];
   bool isSelectionOpened = false;
   fetchAllFolders() async {
@@ -16,11 +18,50 @@ class FoldersCubit extends Cubit<FoldersState> {
     var folderBox = Hive.box<FolderModel>(kFoldersBox);
     // List<NoteModel> notes = notesBox.values.toList();
     folders = folderBox.values.toList();
+    //make folder notes list is equal to the list of notes in the model at the box
     emit(FoldersSuccess());
     // } catch (e) {
     //   emit(NotesFailure(e.toString()));
     // }
   }
+
+  // Function to fetch notes for a specific folder
+  List<NoteModel> fetchNotesForFolder(FolderModel folder) {
+    try {
+      var folderBox = Hive.box<FolderModel>(kFoldersBox);
+      var folders = folderBox.values.toList();
+      var index = folders.indexOf(folder);
+      if (index == -1) {
+        return []; // Folder not found, return an empty list
+      }
+      emit(NotesOfFolderSuccess());
+      return folders[index].folderNotes ?? [];
+    } catch (e) {
+      // Handle any potential errors
+      return []; // Return an empty list in case of an error
+    }
+  }
+
+  // List<NoteModel> fetchNotesForFolder(context) {
+  //   try {
+  //     var folderBox = Hive.box<FolderModel>(kFoldersBox);
+  //     var folders = folderBox.values.toList();
+  //     var selectedFolderString =
+  //         BlocProvider.of<AddNoteCubit>(context).selectedfolder;
+  //     var selectedFolder = folderBox.values
+  //         .firstWhere((folder) => folder.name == selectedFolderString);
+
+  //     var index = folders.indexOf(selectedFolder);
+  //     if (index == -1) {
+  //       return []; // Folder not found, return an empty list
+  //     }
+  //     emit(NotesOfFolderSuccess());
+  //     return folders[index].folderNotes ?? [];
+  //   } catch (e) {
+  //     // Handle any potential errors
+  //     return []; // Return an empty list in case of an error
+  //   }
+  // }
 
   deleteSelectedFolders() async {
     try {

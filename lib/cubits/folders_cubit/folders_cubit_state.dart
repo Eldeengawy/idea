@@ -7,6 +7,10 @@ class FoldersInitial extends FoldersState {}
 
 class FoldersSuccess extends FoldersState {}
 
+class NotesOfFolderSuccess extends FoldersState {}
+
+class AddNoteFolderSuccess extends FoldersState {}
+
 class DeleteSelectedFoldersSuccess extends FoldersState {}
 
 class DeleteSelectedFoldersFailure extends FoldersState {
