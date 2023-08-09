@@ -4,6 +4,7 @@
 
 <p id="description">Idea is a powerful and intuitive notes app developed using Flutter that aims to enhance your note-taking experience. Whether you're jotting down quick thoughts making to-do lists or organizing your ideas Idea provides a user-friendly interface and a wide range of features to streamline your note management.</p>
 
+<h2>Project Screenshots:</h2>
 <p align="center">
     <img src="assets/Screenshots/1.jpg" alt="Screenshot 1" width="100">
     <img src="assets/Screenshots/2.jpg" alt="Screenshot 2" width="100">
