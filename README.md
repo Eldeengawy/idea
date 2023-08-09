@@ -7,7 +7,7 @@
 <p align="center">Elevate your note-taking experience with IDEA, an intuitive Flutter notes app. Capture your thoughts, create to-do lists, and manage your ideas effortlessly. With a user-friendly interface and a wide range of features, IDEA is designed to streamline your note management process.</p>
 
 <!-- Project Screenshots -->
-<h2 align="center">Project Screenshots</h2>
+<h2 align="center">📸 Project Screenshots 📸</h2>
 <p align="center">
    <img src="assets/Screenshots/1.jpg" alt="Screenshot 1" width="100">
     <img src="assets/Screenshots/2.jpg" alt="Screenshot 2" width="100">
