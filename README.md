@@ -8,10 +8,13 @@
 
 <!-- Project Screenshots -->
 <h2 align="center">📸 Project Screenshots 📸</h2>
-<p align="center">
-   <img src="assets/Screenshots/1.jpg" alt="Screenshot 1" width="100">
-    <img src="assets/Screenshots/2.jpg" alt="Screenshot 2" width="100">
-    <img src="assets/Screenshots/3.jpg" alt="Screenshot 3" width="100">
+<div align="center">
+  <img src="assets/Screenshots/1.jpg" alt="Screenshot 1" width="300">
+  <img src="assets/Screenshots/2.jpg" alt="Screenshot 2" width="300">
+  <img src="assets/Screenshots/3.jpg" alt="Screenshot 3" width="300">
+  <!-- Add more img tags for each screenshot... -->
+
+
     <img src="assets/Screenshots/4.jpg" alt="Screenshot 4" width="100">
     <img src="assets/Screenshots/5.jpg" alt="Screenshot 5" width="100">
     <img src="assets/Screenshots/6.jpg" alt="Screenshot 6" width="100">
@@ -24,6 +27,7 @@
     <img src="assets/Screenshots/13.jpg" alt="Screenshot 13" width="100">
   <!-- Add more screenshots... -->
 </p>
+</div>
 
 <!-- Features -->
 <h2 align="center">🚀 Features</h2>
