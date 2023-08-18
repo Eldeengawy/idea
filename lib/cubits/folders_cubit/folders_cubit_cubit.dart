@@ -94,4 +94,30 @@ class FoldersCubit extends Cubit<FoldersState> {
 
     emit(SelectFolder());
   }
+
+  void addNoteToFolder(NoteModel newNote, FolderModel folder) {
+    try {
+      var folderBox = Hive.box<FolderModel>(kFoldersBox);
+      var folders = folderBox.values.toList();
+      var index = folders.indexOf(folder);
+
+      if (index == -1) {
+        emit(AddNoteToFolderFailure('Folder not found.'));
+        return;
+      }
+
+      // Get the folder from the box and add the new note to its list of notes
+      var updatedFolder = folders[index];
+      updatedFolder.folderNotes ??= [];
+      updatedFolder.folderNotes!.add(newNote);
+
+      // Save the updated folder back to the Hive box
+      folderBox.put(updatedFolder.key, updatedFolder);
+
+      emit(AddNoteToFolderSuccess());
+    } catch (e) {
+      // Handle any potential errors
+      emit(AddNoteToFolderFailure(e.toString()));
+    }
+  }
 }

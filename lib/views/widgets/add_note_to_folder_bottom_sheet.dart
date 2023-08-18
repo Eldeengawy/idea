@@ -20,18 +20,7 @@ class AddNoteToFolderBottomSheet extends StatelessWidget {
     return BlocProvider(
       create: (context) => FoldersCubit(),
       child: BlocConsumer<FoldersCubit, FoldersState>(
-        listener: (context, state) {
-          // if (state is AddNoteFailure) {
-          //   if (kDebugMode) {
-          //     // print('Failed ${state.errMessage}');
-          //   }
-          // }
-
-          // if (state is AddNoteFolderSuccess) {
-          // BlocProvider.of<FoldersCubit>(context).fetchAllFolders();
-          // Navigator.pop(context);
-          // }
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           return AbsorbPointer(
             absorbing: state is AddNoteLoading ? true : false,

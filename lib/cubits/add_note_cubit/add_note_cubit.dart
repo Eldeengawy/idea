@@ -23,6 +23,7 @@ class AddNoteCubit extends Cubit<AddNoteState> {
   //     emit(AddNoteFailure(e.toString()));
   //   }
   // }
+
   String selectedfolder = '';
 
   Future<void> addNote(NoteModel note) async {

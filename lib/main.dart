@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
               create: (BuildContext context) => NotesCubit()..fetchAllNotes(),
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,
-                title: 'Idea',
+                title: 'IDEA',
                 theme: ChangeModeCubit.get(context).isDarkMode
                     ? AppThemes.darkTheme
                     : AppThemes

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:idea/constants/app_images.dart';
 
 class CustomSearchWidget extends StatelessWidget {
   const CustomSearchWidget({Key? key}) : super(key: key);
@@ -42,10 +41,10 @@ class CustomSearchWidget extends StatelessWidget {
               },
             ),
           ),
-          const CircleAvatar(
-            backgroundImage: AssetImage(Assets.imagesProfilePic1),
-            radius: 20,
-          ),
+          // const CircleAvatar(
+          //   backgroundImage: AssetImage(Assets.imagesProfilePic1),
+          //   radius: 20,
+          // ),
         ],
       ),
     );

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:idea/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:idea/cubits/folders_cubit/folders_cubit_cubit.dart';
 import 'package:idea/models/folder_model.dart';
 import 'package:idea/models/note_model.dart';
+import 'package:idea/views/widgets/add_note_to_folder_form.dart';
 import 'package:idea/views/widgets/color_pick_button.dart';
 import 'package:intl/intl.dart'; // Import the intl package
 
@@ -23,46 +23,9 @@ class AddNoteForm extends StatefulWidget {
 class _AddNoteFormState extends State<AddNoteForm> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _subjectController = TextEditingController();
-  Color _selectedColor = const Color(0xff17181a); // Default color
+  final Color _selectedColor = const Color(0xff17181a); // Default color
   final GlobalKey<FormState> formKey = GlobalKey();
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-
-  void _showColorPicker() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Pick a color'),
-          content: SingleChildScrollView(
-            child: ColorPicker(
-              pickerColor: _selectedColor,
-              onColorChanged: (color) {
-                setState(() {
-                  _selectedColor = color;
-                });
-              },
-              showLabel: true,
-              pickerAreaHeightPercent: 0.8,
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   void dispose() {
@@ -89,19 +52,13 @@ class _AddNoteFormState extends State<AddNoteForm> {
           date: formattedDate,
           folderName: selectedFolder);
       BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
+      // BlocProvider.of<FoldersCubit>(context).addNoteToFolder(noteModel,folder);
     } else {
       setState(() {
         autovalidateMode = AutovalidateMode.always;
       });
     }
   }
-
-  // List<String> folders = [
-  //   'Folder 1',
-  //   'Folder 2',
-  //   'Folder 3',
-  //   // Add more folder names here as needed
-  // ];
 
   // String selectedFolder = 'Folder 1'; // To store the selected folder name
   List<FolderModel> folders = [];
@@ -213,8 +170,8 @@ class _AddNoteFormState extends State<AddNoteForm> {
                       width: 20.0,
                     ),
                     ColorPickerButton(
-                      selectedColor: _selectedColor,
-                      onPressed: () => _showColorPicker(),
+                      selectedColor: _selectedColor, context: context,
+                      // onPressed: () => showColorPicker(),
                     ),
                   ],
                 )
@@ -224,51 +181,5 @@ class _AddNoteFormState extends State<AddNoteForm> {
         ),
       ],
     );
-  }
-}
-
-class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, this.onTap, this.isLoading = false});
-  final void Function()? onTap;
-  final bool isLoading;
-
-  @override
-  Widget build(BuildContext context) {
-    return !isLoading
-        ? ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 18.0),
-              backgroundColor: const Color(0xffff9e37),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              elevation: 4,
-            ),
-            onPressed: onTap,
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.add, size: 24),
-                SizedBox(width: 8),
-                Text(
-                  'Add Note',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          )
-        : const Center(
-            child: SizedBox(
-              height: 24.0,
-              width: 24.0,
-              child: CircularProgressIndicator(
-                strokeCap: StrokeCap.round,
-                // strokeWidth: 6.0,
-
-                color: Colors.amber,
-              ),
-            ),
-          );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idea/cubits/add_note_cubit/add_note_cubit.dart';
 import 'package:idea/cubits/folders_cubit/folders_cubit_cubit.dart';
 import 'package:idea/models/folder_model.dart';
 import 'package:idea/models/note_model.dart';
@@ -43,16 +44,24 @@ class FolderNotesViewBody extends StatelessWidget {
                 height: 20.0,
               ),
               Expanded(
-                child: BlocBuilder<FoldersCubit, FoldersState>(
-                    builder: (context, state) {
-                  List<NoteModel> notes = BlocProvider.of<FoldersCubit>(context)
-                      .fetchNotesForFolder(folder);
-                  return NotesStaggeredGrid(
-                    notes: notes,
-                    onTapButton: () {},
-                    folderName: '${folder.name}',
-                  );
-                }),
+                child: BlocConsumer<FoldersCubit, FoldersState>(
+                  builder: (context, state) {
+                    List<NoteModel> notes =
+                        BlocProvider.of<FoldersCubit>(context)
+                            .fetchNotesForFolder(folder);
+                    return NotesStaggeredGrid(
+                      notes: notes,
+                      onTapButton: () {},
+                      folderName: '${folder.name}',
+                    );
+                  },
+                  listener: (BuildContext context, Object? state) {
+                    if (state is AddNoteSuccess) {
+                      BlocProvider.of<FoldersCubit>(context)
+                          .fetchNotesForFolder(folder);
+                    }
+                  },
+                ),
               )
             ],
           ),

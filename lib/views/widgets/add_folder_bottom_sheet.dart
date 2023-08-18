@@ -18,15 +18,6 @@ class AddFolderBottomSheet extends StatefulWidget {
 
 class _AddFolderBottomSheetState extends State<AddFolderBottomSheet> {
   void _submitForm() {
-    // String title = _folderNameController.text;
-    // String content = _subjectController.text;
-    // String folderName = ''; // Replace with actual folder name logic
-    // widget.onAddFolder(title, content, _selectedColor, folderName);
-    // Navigator.pop(context);
-    // Format the date in your desired format
-    // DateTime now = DateTime.now();
-
-    // String formattedDate = DateFormat('dd/MM/yyyy hh:mm a').format(now);
     var folderModel = FolderModel(
         name: _folderNameController.text, iconCode: _selectedIcon.codePoint);
     BlocProvider.of<AddFolderCubit>(context).addFolder(folderModel);

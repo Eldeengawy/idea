@@ -35,25 +35,6 @@ class _PageViewWithToggleButtonsState extends State<PageViewWithToggleButtons> {
             _buildButton(1, 'Folders'),
           ],
         ),
-        // const SizedBox(
-        //   height: 20,
-        // ),
-        // Expanded(
-        //   child: Coast(
-        //     beaches: _beaches,
-        //     controller: _coastController,
-        //     onPageChanged: (index) {
-        //       setState(() {
-        //         // _currentPageIndex = index;
-        //         selectedIndex =
-        //             index; // Update selectedIndex to sync with PageView index
-        //       });
-        //     },
-        //     observers: [
-        //       CrabController(),
-        //     ],
-        //   ),
-        // ),
         Expanded(
           child: PageView(
             physics: const BouncingScrollPhysics(),
@@ -85,11 +66,6 @@ class _PageViewWithToggleButtonsState extends State<PageViewWithToggleButtons> {
       ],
     );
   }
-
-  //  BlocBuilder<NotesCubit, NotesState>(
-  //         builder: (context, state) {
-  //           List<NoteModel> notes =
-  //               BlocProvider.of<NotesCubit>(context).notes ?? [];
 
   Widget _buildButton(int index, String text) {
     final isSelected = selectedIndex == index;

@@ -4,9 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idea/cubits/folders_cubit/folders_cubit_cubit.dart';
 import 'package:idea/models/folder_model.dart';
-import 'package:idea/views/folder_notes_view.dart';
 import 'package:idea/views/widgets/add_folder_bottom_sheet.dart';
 import 'package:idea/views/widgets/custom_circular_button.dart';
+import 'package:idea/views/widgets/folder_item_widget.dart';
 
 class FoldersScreen extends StatefulWidget {
   const FoldersScreen({Key? key}) : super(key: key);
@@ -181,103 +181,11 @@ class _FoldersScreenState extends State<FoldersScreen> {
   }
 
   Widget _buildFolderItem(FolderModel folder) {
-    bool isSelectionOpened =
-        BlocProvider.of<FoldersCubit>(context).isSelectionOpened;
-    bool isSelected =
-        BlocProvider.of<FoldersCubit>(context).selectedFolders.contains(folder);
-    // List<FolderModel> selectedFolders =
-    if (_isGridView) {
-      // Render big folder item in grid view
-      return GestureDetector(
-        onTap: isSelectionOpened
-            ? () {
-                BlocProvider.of<FoldersCubit>(context).selectFolder(folder);
-              }
-            : () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FolderNotesView(
-                        folder: folder,
-                      ),
-                    ));
-              },
-        onLongPress: () {
-          BlocProvider.of<FoldersCubit>(context).isSelectionOpened = true;
-          BlocProvider.of<FoldersCubit>(context).selectFolder(folder);
-        },
-        child: Card(
-          color: isSelected
-              ? Colors.orangeAccent.withOpacity(0.4)
-              : const Color(0xff28252c),
-          elevation: 2.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(IconData(folder.iconCode!, fontFamily: 'MaterialIcons'),
-                    size: 36.0),
-                const SizedBox(height: 8.0),
-                Text(
-                  folder.name!,
-                  style: TextStyle(
-                      fontSize: 16.0,
-                      color: Theme.of(context).textTheme.titleLarge?.color),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    } else {
-      // Render small widget in list view
-      // Render small widget in list view
-      return GestureDetector(
-        onTap: isSelectionOpened
-            ? () {
-                BlocProvider.of<FoldersCubit>(context).selectFolder(folder);
-              }
-            : () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FolderNotesView(
-                        folder: folder,
-                      ),
-                    ));
-              },
-        onLongPress: () {
-          BlocProvider.of<FoldersCubit>(context).isSelectionOpened = true;
-          BlocProvider.of<FoldersCubit>(context).selectFolder(folder);
-        },
-        child: Card(
-          color: isSelected
-              ? Colors.orangeAccent.withOpacity(0.4)
-              : const Color(0xff28252c),
-          elevation: 2.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: ListTile(
-            leading: Icon(
-                IconData(folder.iconCode!, fontFamily: 'MaterialIcons'),
-                size: 36.0),
-            title: Text(
-              folder.name!,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Theme.of(context).textTheme.titleLarge?.color,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
+    return FolderItemWidget(
+      context: context,
+      folder: folder,
+      viewType: _isGridView ? FolderViewType.GridView : FolderViewType.ListView,
+    );
   }
 
   void showAddFolderBottomSheet(BuildContext context) {

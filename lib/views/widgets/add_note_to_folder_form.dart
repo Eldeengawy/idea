@@ -172,8 +172,8 @@ class _AddNoteToFolderFormState extends State<AddNoteToFolderForm> {
                       width: 20.0,
                     ),
                     ColorPickerButton(
-                      selectedColor: _selectedColor,
-                      onPressed: () => _showColorPicker(),
+                      selectedColor: _selectedColor, context: context,
+                      // onPressed: () => _showColorPicker(),
                     ),
                   ],
                 )

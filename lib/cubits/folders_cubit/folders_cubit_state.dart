@@ -9,7 +9,13 @@ class FoldersSuccess extends FoldersState {}
 
 class NotesOfFolderSuccess extends FoldersState {}
 
-class AddNoteFolderSuccess extends FoldersState {}
+class AddNoteToFolderSuccess extends FoldersState {}
+
+class AddNoteToFolderFailure extends FoldersState {
+  final String errMessage;
+
+  AddNoteToFolderFailure(this.errMessage);
+}
 
 class DeleteSelectedFoldersSuccess extends FoldersState {}
 
