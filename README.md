@@ -14,14 +14,12 @@
     <img src="assets/Screenshots/3.png" alt="Screenshot 3" width="100">
     <img src="assets/Screenshots/4.png" alt="Screenshot 4" width="100">
     <img src="assets/Screenshots/5.png" alt="Screenshot 5" width="100">
-    <img src="assets/Screenshots/6.png" alt="Screenshot 6" width="100">
     <img src="assets/Screenshots/7.png" alt="Screenshot 7" width="100">
     <img src="assets/Screenshots/8.png" alt="Screenshot 8" width="100">
     <img src="assets/Screenshots/9.png" alt="Screenshot 9" width="100">
     <img src="assets/Screenshots/10.png" alt="Screenshot 10" width="100">
     <img src="assets/Screenshots/11.png" alt="Screenshot 11" width="100">
     <img src="assets/Screenshots/12.png" alt="Screenshot 12" width="100">
-    <img src="assets/Screenshots/13.png" alt="Screenshot 13" width="100">
   <!-- Add more screenshots... -->
 </p>
 
