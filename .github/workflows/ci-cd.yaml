@@ -1,0 +1,63 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - deploy_for_test
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # استخدام Ubuntu لبناء تطبيق Android
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable # أو تحديد قناة معينة مثل 'stable', 'beta', أو 'master'
+
+      - name: Get Flutter packages
+        run: flutter pub get
+
+      - name: Build Android APK
+        run: flutter build apk --release
+
+      - name: Get commit message
+        id: commit-message
+        run: echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    if: always()
+
+    steps:
+      - name: Send Discord notification for APK created
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          COMMIT_MESSAGE=$(echo "${{ env.COMMIT_MESSAGE }}" | jq -R -s '.')
+
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{
+                  "content": "Branch deploy_for_test has been updated and the APK has been created.\n\n**Build Status:** ${{ job.status }}\n**Commit Message:** '"$COMMIT_MESSAGE"'\n\n[Download APK](https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/$(curl -s https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts | jq -r '.artifacts[0].id')/download)"
+                }' \
+            $DISCORD_WEBHOOK_URL
+
+      - name: Send Discord notification for release pending
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{
+                  "content": "The deployment for the branch deploy_for_test is pending release. Please check the build status and review the commit message."
+                }' \
+            $DISCORD_WEBHOOK_URL
