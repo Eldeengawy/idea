@@ -13,18 +13,10 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - name: Install FVM
-        run: |
-          curl -s https://raw.githubusercontent.com/leoafarias/fvm/master/scripts/install.sh | bash
-          echo 'export PATH="$HOME/.pub-cache/bin:$PATH"' >> $GITHUB_ENV
-          source $GITHUB_ENV
-
-      - name: Install Flutter SDK with FVM
-        run: |
-          fvm install 3.1.0-163.1.beta
-
-      - name: Use FVM Flutter
-        run: fvm use 3.1.0-163.1.beta
+      - name: Set up FVM with specified Flutter version
+        uses: VeryGoodOpenSource/very_good_fvm@v2
+        with:
+          version: 3.1.0-163.1.beta
 
       - name: Get Flutter packages
         run: fvm flutter pub get
