@@ -19,18 +19,12 @@ jobs:
           echo 'export PATH="$HOME/.pub-cache/bin:$PATH"' >> $GITHUB_ENV
           source $GITHUB_ENV
 
-      - name: Ensure FVM config
-        run: |
-          if [ ! -f .fvm/fvm_config.json ]; then
-            mkdir -p .fvm
-            echo '{"flutterSdkVersion": "3.1.0-163.1.beta"}' > .fvm/fvm_config.json
-          fi
-
       - name: Install Flutter SDK with FVM
-        run: fvm install
+        run: |
+          fvm install 3.1.0-163.1.beta
 
       - name: Use FVM Flutter
-        run: fvm use
+        run: fvm use 3.1.0-163.1.beta
 
       - name: Get Flutter packages
         run: fvm flutter pub get
