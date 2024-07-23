@@ -18,16 +18,13 @@ jobs:
       #     dart pub global activate fvm
       #     echo 'export PATH="$PATH":"$HOME/.pub-cache/bin"' >> $GITHUB_ENV
 
-      - name: Set up FVM configuration
-        uses: kuhnroyal/flutter-fvm-config-action@v2
+      - uses: actions/checkout@v4
+      - uses: kuhnroyal/flutter-fvm-config-action@v2
         id: fvm-config-action
-
-      - name: Set up Flutter with FVM configuration
-        run: |
-          source $GITHUB_ENV
-          fvm install ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
-          fvm use ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
-
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
+          channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
       - name: Get Flutter packages
         run: |
           source $GITHUB_ENV
