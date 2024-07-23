@@ -13,10 +13,12 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - uses: actions/checkout@v4
-      - uses: kuhnroyal/flutter-fvm-config-action@v2
+      - name: Set up FVM configuration
+        uses: kuhnroyal/flutter-fvm-config-action@v2
         id: fvm-config-action
-      - uses: subosito/flutter-action@v2
+
+      - name: Set up Flutter with FVM configuration
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
           channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
@@ -51,7 +53,7 @@ jobs:
 
           curl -X POST -H "Content-Type: application/json" \
             -d '{
-                  "content": "Branch deploy_for_test has been updated and the APK has been created.\n\n**Build Status:** ${{ job.status }}\n**Commit Message:** '"$COMMIT_MESSAGE"'\n\n[Download APK](https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/$(curl -s https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts | jq -r '.artifacts[0].id')/download)"
+                  "content": "🎉 **Great news, team!** 🎉\n\nThe branch `deploy_for_test` has been updated and a new APK has been created! 🚀\n\n**Build Status:** `${{ job.status }}`\n**Commit Message:** '"$COMMIT_MESSAGE"'\n\n[📦 **Download APK**](https://github.com/${{ github.repository }}/suites/${{ github.run_id }}/artifacts/$(curl -s https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts | jq -r '.artifacts[0].id')/download)\n\nKeep up the great work! 💪😄"
                 }' \
             $DISCORD_WEBHOOK_URL
 
@@ -61,6 +63,6 @@ jobs:
         run: |
           curl -X POST -H "Content-Type: application/json" \
             -d '{
-                  "content": "The deployment for the branch deploy_for_test is pending release. Please check the build status and review the commit message."
+                  "content": "🚀 **Heads up!** 🚀\n\nThe deployment for the branch `deploy_for_test` is now pending release. 🕒\n\nPlease check the build status and review the commit message to ensure everything is good to go. 👍\n\nThanks for your attention! 🙌"
                 }' \
             $DISCORD_WEBHOOK_URL
