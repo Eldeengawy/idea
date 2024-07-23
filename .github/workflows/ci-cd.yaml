@@ -13,16 +13,22 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable # أو تحديد قناة معينة مثل 'stable', 'beta', أو 'master'
+      - name: Install FVM
+        run: |
+          curl -s https://raw.githubusercontent.com/leoafarias/fvm/master/scripts/install.sh | bash
+          export PATH="$HOME/.pub-cache/bin:$PATH"
+
+      - name: Install Flutter SDK with FVM
+        run: fvm install
+
+      - name: Use FVM Flutter
+        run: fvm use
 
       - name: Get Flutter packages
-        run: flutter pub get
+        run: fvm flutter pub get
 
       - name: Build Android APK
-        run: flutter build apk --release
+        run: fvm flutter build apk --release
 
       - name: Get commit message
         id: commit-message
