@@ -13,21 +13,30 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
+      - name: Install FVM
+        run: |
+          dart pub global activate fvm
+          echo 'export PATH="$PATH":"$HOME/.pub-cache/bin"' >> $GITHUB_ENV
+
       - name: Set up FVM configuration
         uses: kuhnroyal/flutter-fvm-config-action@v2
         id: fvm-config-action
 
       - name: Set up Flutter with FVM configuration
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
-          channel: ${{ steps.fvm-config-action.outputs.FLUTTER_CHANNEL }}
+        run: |
+          source $GITHUB_ENV
+          fvm install ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
+          fvm use ${{ steps.fvm-config-action.outputs.FLUTTER_VERSION }}
 
       - name: Get Flutter packages
-        run: fvm flutter pub get
+        run: |
+          source $GITHUB_ENV
+          fvm flutter pub get
 
       - name: Build Android APK
-        run: fvm flutter build apk --release
+        run: |
+          source $GITHUB_ENV
+          fvm flutter build apk --release
 
       - name: Get commit message
         id: commit-message
