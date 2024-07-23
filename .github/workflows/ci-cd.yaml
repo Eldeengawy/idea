@@ -13,10 +13,10 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
-      - name: Install FVM
-        run: |
-          dart pub global activate fvm
-          echo 'export PATH="$PATH":"$HOME/.pub-cache/bin"' >> $GITHUB_ENV
+      # - name: Install FVM
+      #   run: |
+      #     dart pub global activate fvm
+      #     echo 'export PATH="$PATH":"$HOME/.pub-cache/bin"' >> $GITHUB_ENV
 
       - name: Set up FVM configuration
         uses: kuhnroyal/flutter-fvm-config-action@v2
